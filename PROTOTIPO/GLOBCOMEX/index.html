@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOBCOMEX | Pinto Piga Seeds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           VARIABLES Y RESET
+           ========================================= */
+        :root {
+            /* Paleta Corporativa Refinada */
+            --primary-dark: #0b1120;     /* Casi negro */
+            --primary: #1e293b;          /* Slate oscuro */
+            --primary-light: #334155;
+            
+            --accent: #2563eb;           /* Azul vibrante */
+            --accent-dark: #1d4ed8;
+            --accent-soft: #dbeafe;
+            
+            --bg-body: #f3f4f6;          /* Gris muy suave */
+            --white: #ffffff;
+            
+            --text-main: #1f2937;        /* Gris oscuro para lectura */
+            --text-muted: #6b7280;       /* Gris medio para etiquetas */
+            
+            --border: #e5e7eb;
+            
+            /* Estados Semánticos */
+            --success: #059669;          /* Verde esmeralda */
+            --success-bg: #d1fae5;
+            --warning: #d97706;          /* Ambar fuerte */
+            --warning-bg: #fef3c7;
+            --danger: #dc2626;           /* Rojo fuerte */
+            --danger-bg: #fee2e2;
+            
+            --radius: 10px;              /* Bordes más redondeados */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; font-size: 15px; overflow: hidden; }
+
+        /* =========================================
+           UTILIDADES E ICONOS
+           ========================================= */
+        .icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .icon-sm { width: 16px; height: 16px; }
+        .icon-lg { width: 28px; height: 28px; }
+        
+        strong { font-weight: 600; color: var(--primary); }
+        .text-sm { font-size: 13px; color: var(--text-muted); }
+
+        /* =========================================
+           SIDEBAR
+           ========================================= */
+        .sidebar {
+            width: 280px;
+            background-color: var(--primary-dark);
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+            z-index: 50;
+        }
+
+        .brand {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            background: linear-gradient(to right, rgba(255,255,255,0.05), transparent);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .brand-logo { 
+            width: 40px; height: 40px; 
+            background: var(--accent); 
+            border-radius: 8px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: white; font-weight: 800; font-size: 20px; margin-right: 12px;
+        }
+        .brand-info h1 { font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: -0.5px; }
+        .brand-info span { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; }
+
+        .menu { flex: 1; padding: 24px 16px; overflow-y: auto; }
+        .menu-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: #475569; margin: 24px 0 12px 12px; font-weight: 700; }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #cbd5e1;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .nav-item:hover { background-color: rgba(255,255,255,0.08); color: var(--white); transform: translateX(4px); }
+        .nav-item.active { 
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%); 
+            color: var(--white); 
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .nav-item svg { margin-right: 14px; opacity: 0.8; }
+        .nav-item.active svg { opacity: 1; }
+
+        .user-profile {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background-color: rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar { width: 42px; height: 42px; background: linear-gradient(135deg, #475569, #1e293b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 16px; border: 2px solid rgba(255,255,255,0.1); }
+        
+        /* =========================================
+           MAIN CONTENT
+           ========================================= */
+        .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-body); }
+
+        .topbar {
+            height: 70px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .page-title { font-size: 22px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
+        
+        .content { flex: 1; overflow-y: auto; padding: 32px; }
+
+        /* =========================================
+           COMPONENTS (Cards, Tables, Forms)
+           ========================================= */
+        .card { 
+            background: var(--white); 
+            border-radius: var(--radius); 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow); 
+            margin-bottom: 24px; 
+            overflow: hidden; 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { box-shadow: var(--shadow-hover); }
+        
+        .card-header { 
+            padding: 20px 24px; 
+            border-bottom: 1px solid var(--border); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: #fff;
+        }
+        .card-title { font-size: 17px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
+
+        /* KPI Grid */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 32px; }
+        .kpi-card { background: var(--white); padding: 24px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+        .kpi-card::after { content: ''; position: absolute; right: 0; bottom: 0; width: 80px; height: 80px; background: currentColor; opacity: 0.05; border-radius: 50% 0 0 0; pointer-events: none; }
+        
+        .kpi-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .kpi-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .kpi-green { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .kpi-amber { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        
+        .kpi-data h3 { font-size: 32px; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 4px; }
+        .kpi-data p { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+
+        /* Tables */
+        .table-container { overflow-x: auto; border-radius: 0 0 var(--radius) var(--radius); }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+        thead { background-color: #f8fafc; }
+        th { text-align: left; padding: 16px 20px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; background: white; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+
+        /* Badges & Pills */
+        .status-badge { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; gap: 6px; }
+        .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; }
+        .status-blue { background: var(--accent-soft); color: var(--accent-dark); }
+        .status-green { background: var(--success-bg); color: #065f46; }
+        .status-orange { background: var(--warning-bg); color: #92400e; }
+        .status-gray { background: #f1f5f9; color: #475569; }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; gap: 8px; letter-spacing: 0.3px; }
+        .btn-primary { background-color: var(--accent); color: white; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.4); }
+        .btn-primary:hover { background-color: var(--accent-dark); transform: translateY(-1px); }
+        .btn-success { background-color: var(--success); color: white; box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.4); }
+        .btn-success:hover { background-color: #047857; }
+        .btn-outline { background-color: white; border-color: #cbd5e1; color: var(--primary); }
+        .btn-outline:hover { background-color: #f8fafc; border-color: var(--accent); color: var(--accent); }
+        .btn-sm { padding: 6px 12px; font-size: 13px; }
+
+        /* Forms */
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: span 2; }
+        .form-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--primary); }
+        .form-control { width: 100%; padding: 12px 16px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; transition: all 0.2s; background: #fcfcfc; color: var(--primary); }
+        .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); background: white; }
+        select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; }
+
+        /* Login Especial */
+        .login-screen { 
+            position: fixed; inset: 0; 
+            /* CAMBIO: Referencia a tu background local */
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('images/1.png');
+            background-size: cover; background-position: center;
+            z-index: 2000; display: flex; align-items: center; justify-content: center; 
+        }
+        .login-box { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px);
+            width: 450px; padding: 48px; 
+            border-radius: 16px; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .login-logo { margin-bottom: 12px; color: var(--primary-dark); font-size: 28px; font-weight: 800; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+        .pinto-logo { color: #166534; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px; border-top: 1px solid #cbd5e1; padding-top: 10px; width: 100%; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-container { background: var(--white); width: 100%; max-width: 700px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 90vh; overflow-y: auto; }
+        .modal-overlay.open .modal-container { transform: scale(1); }
+        .modal-footer { padding: 20px 24px; border-top: 1px solid var(--border); background: #f8fafc; display: flex; justify-content: flex-end; gap: 12px; }
+
+        /* Maestros Grid Visual */
+        .master-grid-visual { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 16px; }
+        .master-item { background: #f8fafc; border: 1px solid var(--border); padding: 16px; border-radius: 8px; text-align: center; transition: all 0.2s; }
+        .master-item:hover { border-color: var(--accent); background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .master-icon { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; color: var(--accent); border: 1px solid var(--border); }
+        .master-item h4 { font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+        .master-item span { font-size: 12px; color: var(--text-muted); }
+
+        .hidden { display: none !important; }
+        .file-attachment { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent); background: #eff6ff; padding: 4px 8px; border-radius: 4px; font-weight: 500; margin-top: 4px; }
+        
+        /* Animation */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="login-screen">
+        <div class="login-box">
+            <div class="login-logo">
+                <div style="background:var(--accent); width:60px; height:60px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:white;">
+                    <svg class="icon-lg" style="width:36px; height:36px;" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </div>
+                <span>ALL COMEX</span>
+            </div>
+            <p style="color: #64748b; margin-bottom: 32px; font-size: 15px;">Plataforma Inteligente de Comercio Exterior</p>
+            
+            <form id="login-form">
+                <div class="form-group" style="margin-bottom:16px;">
+                    <input type="text" class="form-control" placeholder="Usuario (admin)" id="username" required style="text-align:center;">
+                </div>
+                <div class="form-group" style="margin-bottom:24px;">
+                    <input type="password" class="form-control" placeholder="Contraseña (123)" id="password" required style="text-align:center;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+                    Iniciar Sesión Segura
+                </button>
+            </form>
+            
+            <div style="margin-top: 32px;">
+                <div class="pinto-logo">Impulsado por Pinto Piga Seeds</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app" class="hidden" style="display: flex; width: 100%; height: 100%;">
+        
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">A</div>
+                <div class="brand-info">
+                    <h1>ALL COMEX</h1>
+                    <span>Pinto Piga Seeds</span>
+                </div>
+            </div>
+            
+            <div class="menu" id="sidebar-menu">
+                <div class="menu-label">Panel Principal</div>
+                <a class="nav-item active" onclick="loadView('dashboard')">
+                    <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    Dashboard
+                </a>
+                <a class="nav-item" onclick="loadView('operaciones')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    Operaciones
+                </a>
+                <a class="nav-item" onclick="loadView('tracking')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+                    Tracking (Seguimiento)
+                </a>
+
+                <div class="menu-label">Gestión</div>
+                <a class="nav-item" onclick="loadView('documentos')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Documentos
+                </a>
+                <a class="nav-item" onclick="loadView('reportes')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                    Reportes & Excel
+                </a>
+                <a class="nav-item" onclick="loadView('maestros')">
+                    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    Maestros
+                </a>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar" id="current-avatar">A</div>
+                <div class="user-info">
+                    <h4 id="current-user" style="color:white; font-size:14px; margin-bottom:2px;">Admin</h4>
+                    <span style="font-size:12px; color:#94a3b8;">Administrador</span>
+                </div>
+                <div style="margin-left: auto; cursor: pointer; color: #ef4444;" onclick="logout()" title="Salir">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <h2 id="page-title" class="page-title">Dashboard Ejecutivo</h2>
+                <div style="display:flex; align-items:center; gap:20px;">
+                    <span style="font-size:13px; color:var(--text-muted); display:flex; align-items:center; gap:5px;">
+                        <svg class="icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span id="system-clock">--:--</span>
+                    </span>
+                    <button class="btn btn-primary btn-sm" onclick="openNewOpModal()">+ Nueva Operación</button>
+                </div>
+            </header>
+
+            <div id="content-area" class="content">
+                </div>
+        </main>
+    </div>
+
+    <div id="modal-operacion" class="modal-overlay">
+        <div class="modal-container">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    Registro de Operación
+                </h3>
+                <button style="background:none; border:none; cursor:pointer;" onclick="closeModal()">
+                    <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="card-body">
+                <form id="form-new-op" class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Tipo de Operación</label>
+                        <select class="form-control" id="op-type" onchange="toggleClientProvider()">
+                            <option value="Importación">Importación</option>
+                            <option value="Exportación">Exportación</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Area de negocio</label>
+                        <select class="form-control" id="op-program" required>
+                            <option value="">Seleccione...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="field-provider">
+                        <label class="form-label">Proveedor (Origen)</label>
+                        <select class="form-control" id="op-provider"></select>
+                    </div>
+                    <div class="form-group hidden" id="field-client">
+                        <label class="form-label">Cliente (Destino)</label>
+                        <select class="form-control" id="op-client"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Agrónomo Responsable</label>
+                        <select class="form-control" id="op-agronomist" required></select>
+                    </div>
+                    
+                    <div class="form-group full">
+                        <label class="form-label">Producto / Descripción</label>
+                        <input type="text" class="form-control" placeholder="Ej: Semillas de Maíz Híbrido Parental" id="op-product" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Medio de Transporte</label>
+                        <select class="form-control" id="op-transport">
+                            <option value="Aéreo">Aéreo ✈️</option>
+                            <option value="Marítimo">Marítimo 🚢</option>
+                            <option value="Terrestre">Terrestre 🚛</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ref. Externa (Guía/BL/Factura)</label>
+                        <input type="text" class="form-control" id="op-ref" placeholder="Ej: BL-998877">
+                    </div>
+                    
+                    <div class="form-group full" style="border: 2px dashed var(--border); padding: 20px; text-align:center; border-radius:8px; background:#f9fafb;">
+                        <label class="form-label" style="margin-bottom:10px;">Adjuntar Documentación Inicial</label>
+                        <input type="file" id="op-file" class="form-control" style="border:none; background:transparent;">
+                        <small style="color: var(--text-muted); display:block; margin-top:5px;">Soporta PDF, XLSX, JPG (Max 10MB)</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveOperation()">Guardar Operación</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           DATA MOCKUP (BASE DE DATOS SIMULADA)
+           ========================================= */
+        const DB = {
+            usuarios: [
+                { user: 'admin', pass: '123', name: 'Ivannia Antonia', role: 'Administrador' },
+                { user: 'operador', pass: '123', name: 'johana Pinto', role: 'Operador' }
+            ],
+            programas: [
+                { id: 'HF', name: 'HF' },
+                { id: 'PH', name: 'PH' },
+                { id: 'PM', name: 'PM' },
+                { id: 'VL', name: 'VL' },
+                { id: 'VK', name: 'VK' },
+                { id: 'PV', name: 'PV' },
+                { id: 'PU', name: 'PU' },
+
+
+                { id: 'EXP', name: 'Exportación Comercial' }
+            ],
+            productos: [
+                { code: 'SEM-001', name: 'Semilla Maíz Parental', category: 'Semillas' },
+                { code: 'SEM-002', name: 'Semilla Tomate Cherry', category: 'Semillas' },
+                { code: 'INS-101', name: 'Fertilizante Premium', category: 'Insumos' },
+                { code: 'EMB-500', name: 'Sacos Propileno 50kg', category: 'Embalaje' }
+            ],
+            servicios: [
+                { code: 'LOG-INT', name: 'Flete Internacional', provider: 'DHL Global' },
+                { code: 'ADU-001', name: 'Despacho Aduanero', provider: 'Agencia Edwards' },
+                { code: 'SAG-INS', name: 'Inspección Fitosanitaria', provider: 'SAG Chile' }
+            ],
+            agronomos: [
+                { id: 1, name: 'Fernando Diaz' },
+                { id: 2, name: 'María Soto' },
+                { id: 3, name: 'Roberto Díaz' }
+            ],
+            proveedores: [
+                { name: 'Seeds Global LLC (USA)' },
+                { name: 'EuroSemillas GmbH (GER)' },
+                { name: 'China Agro Corp (CHN)' }
+            ],
+            clientes: [
+                { name: 'AgroBrasil Ltda.' },
+                { name: 'Farmers Union Peru' },
+                { name: 'Mexico Foods SA' }
+            ],
+            operaciones: [
+                { id: 'IMP-2026-001', type: 'Importación', program: 'HF', partner: 'Seeds Global LLC', product: 'Semilla Maíz Parental', transport: 'Aéreo', ref: 'AWB-123456', status: 'En Tránsito', file: null },
+                { id: 'EXP-2026-044', type: 'Exportación', program: 'PM', partner: 'AgroBrasil Ltda.', product: 'Tomate Cherry', transport: 'Marítimo', ref: 'BL-987654', status: 'Aduana', file: 'Factura_Export.pdf' },
+                { id: 'IMP-2026-002', type: 'Importación', program: 'VL', partner: 'EuroSemillas GmbH', product: 'Fertilizante Orgánico', transport: 'Aéreo', ref: 'AWB-555111', status: 'Bodega Origen', file: null },
+                { id: 'EXP-2026-045', type: 'Exportación', program: 'EXP', partner: 'Mexico Foods SA', product: 'Zapallo Italiano', transport: 'Terrestre', ref: 'CRT-2211', status: 'Finalizado', file: 'CRT_Final.pdf' }
+            ]
+        };
+
+        let currentUser = null;
+
+        /* =========================================
+           LOGIC & FUNCIONES
+           ========================================= */
+        
+        // Reloj del sistema
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('system-clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }, 1000);
+
+        // Login
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            
+            const found = DB.usuarios.find(user => user.user === u && user.pass === p);
+            if(found) {
+                currentUser = found;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                document.getElementById('current-user').innerText = found.name;
+                document.getElementById('current-avatar').innerText = found.name.charAt(0);
+                loadView('dashboard');
+            } else {
+                alert('Credenciales incorrectas');
+            }
+        });
+
+        function logout() { location.reload(); }
+
+        // Navegación
+        function loadView(viewName) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const items = document.querySelectorAll('.nav-item');
+            
+            // Mapeo simple de índices
+            const idxMap = {'dashboard':0, 'operaciones':1, 'tracking':2, 'documentos':3, 'reportes':4, 'maestros':5};
+            if(items[idxMap[viewName]]) items[idxMap[viewName]].classList.add('active');
+
+            const content = document.getElementById('content-area');
+            const title = document.getElementById('page-title');
+            content.className = 'content animate-in'; // Trigger animación
+            content.innerHTML = '';
+
+            switch(viewName) {
+                case 'dashboard':
+                    title.innerText = 'Dashboard Ejecutivo';
+                    renderDashboard(content);
+                    break;
+                case 'operaciones':
+                    title.innerText = 'Gestión de Operaciones';
+                    renderOperaciones(content);
+                    break;
+                case 'tracking':
+                    title.innerText = 'Tracking de Cargas';
+                    renderTracking(content);
+                    break;
+                case 'documentos':
+                    title.innerText = 'Gestión Documental';
+                    renderDocumentos(content);
+                    break;
+                case 'reportes':
+                    title.innerText = 'Reportes & Analítica';
+                    renderReportes(content);
+                    break;
+                case 'maestros':
+                    title.innerText = 'Maestros del Sistema';
+                    renderMaestros(content);
+                    break;
+            }
+        }
+
+        /* =========================================
+           RENDERIZADORES (VISTAS)
+           ========================================= */
+        function renderDashboard(container) {
+            const totalOps = DB.operaciones.length;
+            const imports = DB.operaciones.filter(o => o.type === 'Importación').length;
+            const exports = DB.operaciones.filter(o => o.type === 'Exportación').length;
+            
+            container.innerHTML = `
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon kpi-blue">
+                            <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        </div>
+                        <div class="kpi-data">
+                            <h3>${totalOps}</h3>
+                            <p>Operaciones Activas</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon kpi-green">
+                            <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                        </div>
+                        <div class="kpi-data">
+                            <h3>${exports}</h3>
+                            <p>Exportaciones (Mes)</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon kpi-amber">
+                             <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </div>
+                        <div class="kpi-data">
+                            <h3>${imports}</h3>
+                            <p>Importaciones (Mes)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg class="icon" style="color:var(--danger)" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            Alertas Normativas Críticas
+                        </h3>
+                    </div>
+                    <div class="table-container">
+                         <table>
+                            <thead>
+                                <tr>
+                                    <th>Nivel</th>
+                                    <th>Descripción Alerta</th>
+                                    <th>Operación Afectada</th>
+                                    <th>Vencimiento</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="status-badge" style="background:#fef2f2; color:#b91c1c; border:1px solid #fecaca">CRÍTICA</span></td>
+                                    <td><strong>Falta Certificado Origen</strong></td>
+                                    <td>EXP-2026-044</td>
+                                    <td style="color:#b91c1c; font-weight:600">Mañana</td>
+                                    <td>Pendiente</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="status-badge status-orange">MEDIA</span></td>
+                                    <td>Confirmar ETA Naviera</td>
+                                    <td>IMP-2026-001</td>
+                                    <td>En 3 días</td>
+                                    <td>En Gestión</td>
+                                </tr>
+                            </tbody>
+                         </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOperaciones(container) {
+            let rows = DB.operaciones.map(op => {
+                let badgeClass = 'status-gray';
+                if(op.status === 'Finalizado') badgeClass = 'status-green';
+                if(op.status === 'En Tránsito') badgeClass = 'status-blue';
+                if(op.status === 'Aduana') badgeClass = 'status-orange';
+
+                let fileHtml = op.file ? `<div class="file-attachment"><svg class="icon-sm" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg> ${op.file}</div>` : '<span style="color:#cbd5e1">-</span>';
+
+                return `
+                <tr>
+                    <td><strong style="color:var(--accent)">${op.id}</strong></td>
+                    <td>${op.type}</td>
+                    <td><span style="font-weight:500; color:#475569">${op.program}</span></td>
+                    <td>${op.partner}</td>
+                    <td>${op.transport}</td>
+                    <td><span class="status-badge ${badgeClass}">${op.status}</span></td>
+                    <td>${fileHtml}</td>
+                </tr>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Listado Maestro de Operaciones</h3>
+                        <div style="display:flex; gap:10px;">
+                             <input type="text" placeholder="🔍 Buscar por ID o Cliente..." style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:13px; width:250px;">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID Operación</th>
+                                    <th>Tipo</th>
+                                    <th>Programa</th>
+                                    <th>Contraparte</th>
+                                    <th>Transporte</th>
+                                    <th>Estado Actual</th>
+                                    <th>Adjuntos</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTracking(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Timeline: IMP-2026-001</h3></div>
+                    <div class="card-body">
+                        <div style="display:flex; flex-direction:column; gap:30px; border-left: 3px solid #e2e8f0; padding-left: 30px; margin-left: 15px;">
+                            <div style="position:relative;">
+                                <div style="position:absolute; left:-41px; top:0; width:20px; height:20px; background:var(--success); border-radius:50%; border:4px solid white; box-shadow:0 0 0 1px #e2e8f0;"></div>
+                                <h4 style="font-size:16px; margin-bottom:4px; font-weight:700;">Orden de Compra Generada</h4>
+                                <span style="font-size:13px; color:var(--text-muted);">12 Ene 2026 - Usuario: Admin</span>
+                            </div>
+                            <div style="position:relative;">
+                                <div style="position:absolute; left:-41px; top:0; width:20px; height:20px; background:var(--accent); border-radius:50%; border:4px solid white; box-shadow:0 0 0 1px #e2e8f0;"></div>
+                                <h4 style="font-size:16px; margin-bottom:4px; font-weight:700;">Vuelo Confirmado (En Tránsito)</h4>
+                                <span style="font-size:13px; color:var(--text-muted);">Hoy 10:30 AM - Vuelo LA500</span>
+                                <p style="font-size:14px; margin-top:8px; background:#eff6ff; padding:12px; border-radius:8px; color:#1e40af; border:1px solid #dbeafe;">
+                                    <strong>Novedad:</strong> La carga se encuentra en vuelo hacia Santiago (SCL). ETA actualizado para mañana.
+                                </p>
+                            </div>
+                            <div style="position:relative; opacity: 0.5;">
+                                <div style="position:absolute; left:-41px; top:0; width:20px; height:20px; background:#cbd5e1; border-radius:50%; border:4px solid white; box-shadow:0 0 0 1px #e2e8f0;"></div>
+                                <h4 style="font-size:16px; margin-bottom:4px; font-weight:700;">Recepción Aduana</h4>
+                                <span style="font-size:13px; color:var(--text-muted);">Estimado: 14 Feb 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderReportes(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Centro de Reportes</h3>
+                        <button class="btn btn-success btn-sm" onclick="exportToExcel()">
+                            <svg class="icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Descargar Excel (.csv)
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Desde</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Hasta</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="table-container" style="margin-top:20px; border:1px solid var(--border); border-radius:8px;">
+                            <table>
+                                <thead><tr><th>ID</th><th>Tipo</th><th>Programa</th><th>Valor FOB (Est)</th><th>Estado</th></tr></thead>
+                                <tbody>
+                                    ${DB.operaciones.map(o => `<tr><td><strong>${o.id}</strong></td><td>${o.type}</td><td>${o.program}</td><td>USD $45,000</td><td>${o.status}</td></tr>`).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDocumentos(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Repositorio Digital (RN-02)</h3></div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Documento</th>
+                                    <th>Operación</th>
+                                    <th>Fecha Carga</th>
+                                    <th>Tamaño</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="display:flex; align-items:center; gap:10px;">
+                                        <svg class="icon" style="color:#ef4444" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg> 
+                                        <strong>Factura Comercial.pdf</strong>
+                                    </td>
+                                    <td>IMP-2026-001</td>
+                                    <td>12/02/2026</td>
+                                    <td>1.2 MB</td>
+                                    <td><button class="btn btn-outline btn-sm">Descargar</button></td>
+                                </tr>
+                                <tr>
+                                    <td style="display:flex; align-items:center; gap:10px;">
+                                        <svg class="icon" style="color:#3b82f6" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg> 
+                                        <strong>BL_Master.pdf</strong>
+                                    </td>
+                                    <td>EXP-2026-044</td>
+                                    <td>10/02/2026</td>
+                                    <td>3.5 MB</td>
+                                    <td><button class="btn btn-outline btn-sm">Descargar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMaestros(container) {
+            // Generar HTML visual para productos
+            const prodsHtml = DB.productos.map(p => `
+                <div class="master-item">
+                    <div class="master-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    </div>
+                    <h4>${p.code}</h4>
+                    <p>${p.name}</p>
+                    <span class="status-badge status-blue" style="margin-top:8px">${p.category}</span>
+                </div>
+            `).join('');
+
+            // Generar HTML visual para servicios
+            const servsHtml = DB.servicios.map(s => `
+                <div class="master-item">
+                    <div class="master-icon" style="color:var(--success); border-color:var(--success-bg)">
+                        <svg class="icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    </div>
+                    <h4>${s.code}</h4>
+                    <p>${s.name}</p>
+                    <span style="font-size:12px; color:var(--text-muted)">${s.provider}</span>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Catálogo de Productos y Semillas</h3></div>
+                    <div class="card-body">
+                        <div class="master-grid-visual">${prodsHtml}</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3 class="card-title">Proveedores de Servicios Logísticos</h3></div>
+                    <div class="card-body">
+                        <div class="master-grid-visual">${servsHtml}</div>
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title">Programas (Pinto Piga)</h3></div>
+                        <div class="card-body">
+                             <ul style="list-style:none;">
+                                ${DB.programas.map(p => `<li style="padding:8px 0; border-bottom:1px dashed #e2e8f0; display:flex; justify-content:space-between;"><strong>${p.id}</strong> <span>${p.name}</span></li>`).join('')}
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="card">
+                         <div class="card-header"><h3 class="card-title">Agrónomos</h3></div>
+                         <div class="table-container">
+                            <table>
+                                <tbody>
+                                    ${DB.agronomos.map(a => `<tr><td><strong>${a.name}</strong></td><td><span class="status-badge status-green">Activo</span></td></tr>`).join('')}
+                                </tbody>
+                            </table>
+                         </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* =========================================
+           MODAL & EXCEL UTILS
+           ========================================= */
+        function openNewOpModal() {
+            // Llenar Selects
+            const fillSelect = (id, data, valKey, textKey) => {
+                const el = document.getElementById(id);
+                el.innerHTML = '<option value="">Seleccione...</option>' + data.map(d => `<option value="${d[valKey] || d[textKey]}">${d[textKey]}</option>`).join('');
+            };
+
+            fillSelect('op-program', DB.programas, 'id', 'name');
+            fillSelect('op-provider', DB.proveedores, 'name', 'name');
+            fillSelect('op-client', DB.clientes, 'name', 'name');
+            fillSelect('op-agronomist', DB.agronomos, 'name', 'name');
+
+            document.getElementById('modal-operacion').classList.add('open');
+            toggleClientProvider();
+        }
+
+        function closeModal() { document.getElementById('modal-operacion').classList.remove('open'); }
+
+        function toggleClientProvider() {
+            const type = document.getElementById('op-type').value;
+            const isImp = type === 'Importación';
+            document.getElementById('field-provider').classList.toggle('hidden', !isImp);
+            document.getElementById('field-client').classList.toggle('hidden', isImp);
+        }
+
+        function saveOperation() {
+            const prog = document.getElementById('op-program').value;
+            const prod = document.getElementById('op-product').value;
+            const fileInput = document.getElementById('op-file');
+            
+            if(!prog || !prod) { alert('Complete campos obligatorios'); return; }
+
+            const type = document.getElementById('op-type').value;
+            const partner = type === 'Importación' ? document.getElementById('op-provider').value : document.getElementById('op-client').value;
+            
+            // Simulación de archivo
+            let fileName = fileInput.files.length > 0 ? fileInput.files[0].name : null;
+
+            DB.operaciones.unshift({
+                id: (type === 'Importación' ? 'IMP' : 'EXP') + '-2026-' + Math.floor(Math.random() * 1000),
+                type, program: prog, partner, product: prod,
+                transport: document.getElementById('op-transport').value,
+                ref: document.getElementById('op-ref').value || 'N/A',
+                status: 'Pendiente',
+                file: fileName
+            });
+
+            closeModal();
+            loadView('operaciones');
+        }
+
+        function exportToExcel() {
+            let csvContent = "data:text/csv;charset=utf-8,ID,Tipo,Programa,Contraparte,Producto,Estado\n";
+            DB.operaciones.forEach(row => {
+                csvContent += `${row.id},${row.type},${row.program},${row.partner},${row.product},${row.status}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "reporte_comex_pintopiga.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    <script>
+/* =========================================
+   MÓDULO DE HISTORIAL DE OPERACIONES
+   ========================================= */
+
+// Agregar operaciones históricas a la base de datos
+DB.operacionesHistoricas = [
+    {
+        id: 'IMP-2025-087',
+        type: 'Importación',
+        program: 'HF',
+        partner: 'Seeds Global LLC (USA)',
+        product: 'Semilla Girasol Parental',
+        transport: 'Aéreo',
+        ref: 'AWB-789456',
+        status: 'Finalizado',
+        fechaInicio: '15/11/2025',
+        fechaFin: '28/11/2025',
+        valorFOB: 'USD $52,000',
+        agronomist: 'Fernando Diaz',
+        observaciones: 'Operación completada sin inconvenientes. Certificación SAG aprobada.',
+        documentos: ['Factura_Comercial.pdf', 'BL_Master.pdf', 'Certificado_Fitosanitario.pdf']
+    },
+    {
+        id: 'EXP-2025-123',
+        type: 'Exportación',
+        program: 'PM',
+        partner: 'AgroBrasil Ltda.',
+        product: 'Semillas de Tomate Cherry Premium',
+        transport: 'Marítimo',
+        ref: 'BL-445566',
+        status: 'Finalizado',
+        fechaInicio: '02/12/2025',
+        fechaFin: '22/12/2025',
+        valorFOB: 'USD $68,500',
+        agronomist: 'María Soto',
+        observaciones: 'Entrega exitosa. Cliente confirmó recepción conforme. Pago recibido.',
+        documentos: ['Packing_List.pdf', 'Certificate_Origin.pdf', 'Invoice_EXP123.pdf']
+    },
+    {
+        id: 'IMP-2025-104',
+        type: 'Importación',
+        program: 'VL',
+        partner: 'EuroSemillas GmbH (GER)',
+        product: 'Fertilizante Orgánico Premium 20kg',
+        transport: 'Marítimo',
+        ref: 'BL-332211',
+        status: 'Finalizado',
+        fechaInicio: '20/10/2025',
+        fechaFin: '15/11/2025',
+        valorFOB: 'USD $41,200',
+        agronomist: 'Roberto Díaz',
+        observaciones: 'Retraso de 3 días por inspección adicional en aduana. Resuelto favorablemente.',
+        documentos: ['Commercial_Invoice.pdf', 'Customs_Declaration.pdf']
+    }
+];
+
+// Función para renderizar el historial
+function renderHistorial(container) {
+    const rows = DB.operacionesHistoricas.map(op => {
+        const docsHtml = op.documentos.map(doc => 
+            `<div class="file-attachment" style="margin-right:6px; margin-bottom:4px;">
+                <svg class="icon-sm" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                ${doc}
+            </div>`
+        ).join('');
+
+        const tipoColor = op.type === 'Importación' ? '#3b82f6' : '#059669';
+
+        return `
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-header" style="background: linear-gradient(to right, ${tipoColor}15, transparent);">
+                <div>
+                    <h3 class="card-title" style="color:${tipoColor}; margin-bottom:4px;">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        ${op.id}
+                    </h3>
+                    <span class="text-sm">${op.product}</span>
+                </div>
+                <span class="status-badge status-green">
+                    <svg class="icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    ${op.status}
+                </span>
+            </div>
+            <div class="card-body">
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; margin-bottom:20px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Tipo Operación</label>
+                        <strong style="color:${tipoColor}; font-size:15px;">${op.type}</strong>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Programa</label>
+                        <strong style="font-size:15px;">${op.program}</strong>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Contraparte</label>
+                        <strong style="font-size:15px;">${op.partner}</strong>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Transporte</label>
+                        <span style="font-size:14px;">${op.transport} (${op.ref})</span>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Período</label>
+                        <span style="font-size:14px;">${op.fechaInicio} → ${op.fechaFin}</span>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Valor FOB</label>
+                        <strong style="font-size:15px; color:var(--success);">${op.valorFOB}</strong>
+                    </div>
+                </div>
+
+                <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid var(--border); margin-bottom:16px;">
+                    <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">
+                        <svg class="icon-sm" style="display:inline-block; vertical-align:middle;" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"></path></svg>
+                        Agrónomo Responsable
+                    </label>
+                    <strong style="color:var(--primary); font-size:14px;">${op.agronomist}</strong>
+                </div>
+
+                <div style="background:#fffbeb; padding:16px; border-radius:8px; border:1px solid #fde68a; margin-bottom:16px;">
+                    <label style="font-size:12px; color:#92400e; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px; font-weight:600;">
+                        📋 Observaciones Finales
+                    </label>
+                    <p style="font-size:14px; color:#78350f; line-height:1.6; margin:0;">${op.observaciones}</p>
+                </div>
+
+                <div>
+                    <label style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:10px;">
+                        <svg class="icon-sm" style="display:inline-block; vertical-align:middle;" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path></svg>
+                        Documentación Archivada
+                    </label>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        ${docsHtml}
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+
+    container.innerHTML = `
+        <div style="margin-bottom:24px; background:linear-gradient(135deg, #1e293b, #334155); padding:24px; border-radius:12px; color:white;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                <svg class="icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <h2 style="font-size:24px; font-weight:700; margin:0;">Historial de Operaciones</h2>
+            </div>
+            <p style="margin:0; opacity:0.9; font-size:14px;">Registro completo de operaciones finalizadas con éxito</p>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <button class="btn btn-outline">
+                <svg class="icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                Filtrar por Importación
+            </button>
+            <button class="btn btn-outline">
+                <svg class="icon-sm" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                Filtrar por Exportación
+            </button>
+            <button class="btn btn-success btn-sm" style="margin-left:auto;" onclick="exportToExcel()">
+                <svg class="icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                Exportar Historial
+            </button>
+        </div>
+
+        ${rows}
+
+        <div class="card" style="text-align:center; padding:40px; background:#f8fafc;">
+            <svg class="icon-lg" style="width:48px; height:48px; margin:0 auto 16px; color:#cbd5e1;" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <p style="color:var(--text-muted); font-size:15px; margin:0;">Total de operaciones históricas: <strong>${DB.operacionesHistoricas.length}</strong></p>
+            <p style="color:var(--text-muted); font-size:13px; margin-top:8px;">Mostrando operaciones finalizadas del período 2025</p>
+        </div>
+    `;
+}
+
+// MODIFICAR LA FUNCIÓN loadView EXISTENTE - Agregar el case 'historial'
+// Buscar en tu código la función loadView y REEMPLAZARLA por esta versión actualizada:
+const loadViewOriginal = loadView; // Guardar la original por si acaso
+loadView = function(viewName) {
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    const items = document.querySelectorAll('.nav-item');
+    
+    // Mapeo actualizado con historial
+    const idxMap = {'dashboard':0, 'operaciones':1, 'tracking':2, 'historial':3, 'documentos':4, 'reportes':5, 'maestros':6};
+    if(items[idxMap[viewName]]) items[idxMap[viewName]].classList.add('active');
+
+    const content = document.getElementById('content-area');
+    const title = document.getElementById('page-title');
+    content.className = 'content animate-in';
+    content.innerHTML = '';
+
+    switch(viewName) {
+        case 'dashboard':
+            title.innerText = 'Dashboard Ejecutivo';
+            renderDashboard(content);
+            break;
+        case 'operaciones':
+            title.innerText = 'Gestión de Operaciones';
+            renderOperaciones(content);
+            break;
+        case 'tracking':
+            title.innerText = 'Tracking de Cargas';
+            renderTracking(content);
+            break;
+        case 'historial':
+            title.innerText = 'Historial de Operaciones';
+            renderHistorial(content);
+            break;
+        case 'documentos':
+            title.innerText = 'Gestión Documental';
+            renderDocumentos(content);
+            break;
+        case 'reportes':
+            title.innerText = 'Reportes & Analítica';
+            renderReportes(content);
+            break;
+        case 'maestros':
+            title.innerText = 'Maestros del Sistema';
+            renderMaestros(content);
+            break;
+    }
+}
+
+// AGREGAR EL NUEVO NAV-ITEM AL MENÚ
+// Esto se inyecta automáticamente en el sidebar
+document.addEventListener('DOMContentLoaded', function() {
+    const trackingItem = document.querySelector('.nav-item[onclick*="tracking"]');
+    if(trackingItem) {
+        const historialItem = document.createElement('a');
+        historialItem.className = 'nav-item';
+        historialItem.onclick = function() { loadView('historial'); };
+        historialItem.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Historial
+        `;
+        trackingItem.parentNode.insertBefore(historialItem, trackingItem.nextSibling);
+    }
+});
+
+</script>
+</body>
+</html>
